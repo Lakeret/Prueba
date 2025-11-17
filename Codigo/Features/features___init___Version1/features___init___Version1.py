@@ -1,0 +1,1 @@
+# Paquete features — aquí podemos exponer atajos si queremos
