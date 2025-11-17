@@ -1,7 +1,4 @@
 # Análisis actual de funcionalidades
-
-Grupo: GLHF
-
 Fecha: 2025-11-17
 
 Resumen:
