@@ -1,0 +1,41 @@
+# Ejemplo: archivo para ejecutar cambios y push usando un PAT guardado en secrets.MACHINE_PAT
+# Trigger: workflow_dispatch (ejecutar manualmente desde Actions) o push/cron si quieres automatizar.
+name: Auto Commit & Push
+
+on:
+  workflow_dispatch:
+
+jobs:
+  commit-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "biblioteca-bot"
+          git config user.email "bot@example.com"
+
+      - name: Make changes (example)
+        run: |
+          # Aquí pones comandos que generen/actualicen archivos
+          # Ejemplo: crear un archivo con la fecha
+          echo "Actualizado por workflow en $(date -u)" > AUTO_UPDATE.txt
+          git add AUTO_UPDATE.txt || true
+          # Solo commit si hay cambios
+          if ! git diff --staged --quiet; then
+            git commit -m "Automated update: $(date -u)"
+          else
+            echo "No changes to commit"
+          fi
+
+      - name: Push changes
+        env:
+          TOKEN: ${{ secrets.MACHINE_PAT }}
+        run: |
+          # Configurar remote con token para permitir push
+          git remote set-url origin https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git
+          git push origin HEAD:${{ github.ref_name || 'main' }}
