@@ -1,6 +1,4 @@
-# Diez ideas de implementaciones para uso comercial
 
-Grupo: GLHF
 
 Fecha: 2025-11-17
 
